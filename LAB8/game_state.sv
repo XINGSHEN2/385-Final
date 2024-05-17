@@ -1,9 +1,7 @@
 module game_state (
     input logic Clk,
     input logic Reset,
-    input logic start_game,
-    input logic end_game,
-    output logic [1:0] state
+    input state_t next_state,    output state_t state
 );
 
     typedef enum logic [3:0] {
@@ -14,9 +12,10 @@ module game_state (
         PLAYER1DOWN = 4'b0100,
         PLAYER2DOWN = 4'b0101,
         ENDGAME = 4'b0110,
+        MENU = 4'b1111
     } state_t;
 
-    state_t current_state, next_state;
+    state_t current_state;
 
     always_ff @(posedge Clk or posedge Reset) begin
         if (Reset)
@@ -24,21 +23,7 @@ module game_state (
         else
             current_state <= next_state;
     end
-
-    always_comb begin
-        next_state = current_state;
-        case (current_state)
-            IDLE: begin
-                if (start_game)
-                    next_state = RUNNING;
-            end
-        
-            default: begin
-                next_state = IDLE;
-            end
-        endcase
-    end
-
+    
     assign state = current_state;
 
 endmodule
