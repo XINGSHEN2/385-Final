@@ -32,7 +32,7 @@ module  color_mapper ( input              is_ball,            // Whether current
 
     // change color to the destnation pixel
     buckshot_example cat_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_cat), .blue(Blue_cat), .green(Green_cat));
-    Right_example Right_instance (.vga_clk(Clk), .DrawX(Ball_x_dis + 10), .DrawY(Ball_y_dis + 10), .blank(1'b1), .red(Red_Right), .blue(Blue_Right), .green(Green_Right));
+    Pistol_Scene_example Right_instance (.vga_clk(Clk), .DrawX(Ball_x_dis + 64), .DrawY(Ball_y_dis + 64), .blank(1'b1), .red(Red_Right), .blue(Blue_Right), .green(Green_Right));
 
 
     // Assign color based on is_ball signal
