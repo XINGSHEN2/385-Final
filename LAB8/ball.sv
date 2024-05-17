@@ -24,9 +24,9 @@ module  ball ( input         Clk,                // 50 MHz clock
               );
 
     parameter [9:0] Ball_X_Center = 10'd320;  // Center position on the X axis
-    parameter [9:0] Ball_Y_Center = 10'd240;  // Center position on the Y axis
-    parameter [9:0] Ball_X_Min = 10'd0;       // Leftmost point on the X axis
-    parameter [9:0] Ball_X_Max = 10'd639;     // Rightmost point on the X axis
+    parameter [9:0] Ball_Y_Center = 10'd20;  // Center position on the Y axis
+    parameter [9:0] Ball_X_Min = 10'd160;       // Leftmost point on the X axis
+    parameter [9:0] Ball_X_Max = 10'd480;     // Rightmost point on the X axis
     parameter [9:0] Ball_Y_Min = 10'd0;       // Topmost point on the Y axis
     parameter [9:0] Ball_Y_Max = 10'd479;     // Bottommost point on the Y axis
     parameter [9:0] Ball_X_Step = 10'd1;      // Step size on the X axis
@@ -51,7 +51,7 @@ module  ball ( input         Clk,                // 50 MHz clock
             Ball_X_Pos <= Ball_X_Center;
             Ball_Y_Pos <= Ball_Y_Center;
             Ball_X_Motion <= 10'd0;
-            Ball_Y_Motion <= Ball_Y_Step;
+            Ball_Y_Motion <= 10'd0;
         end
         else
         begin
@@ -77,23 +77,23 @@ module  ball ( input         Clk,                // 50 MHz clock
             begin
                 case (keycode)
                     // W
-                    8'h1a :
-                        begin
-                            Ball_X_Motion_in = 10'h000;
-                            Ball_Y_Motion_in = (~(Ball_Y_Step) + 1'b1);
-                        end
+                    // 8'h1a :
+                    //     begin
+                    //         Ball_X_Motion_in = 10'h000;
+                    //         Ball_Y_Motion_in = (~(Ball_Y_Step) + 1'b1);
+                    //     end
                     // A
                     8'h04 :
                         begin
                             Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
                             Ball_Y_Motion_in = 10'h000;
                         end
-                    // S
-                    8'h16 :
-                        begin
-                            Ball_X_Motion_in = 10'h000;
-                            Ball_Y_Motion_in = Ball_Y_Step;
-                        end
+                    // // S
+                    // 8'h16 :
+                    //     begin
+                    //         Ball_X_Motion_in = 10'h000;
+                    //         Ball_Y_Motion_in = Ball_Y_Step;
+                    //     end
                     // D
                     8'h07 :
                         begin
@@ -124,7 +124,8 @@ module  ball ( input         Clk,                // 50 MHz clock
 
                 else if( Ball_X_Pos + Ball_Size >= Ball_X_Max )  // Ball is at the right edge, BOUNCE!
 						 begin
-							  Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);  // 2's complement.
+							//   Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);  // 2's complement.
+                              Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);  // 2's complement.
 							  Ball_Y_Motion_in = 0;
 						 end
                 else if ( Ball_X_Pos <= Ball_X_Min + Ball_Size )  // Ball is at the left edge, BOUNCE!
@@ -158,21 +159,19 @@ module  ball ( input         Clk,                // 50 MHz clock
     assign DistX = DrawX - Ball_X_Pos;
     assign DistY = DrawY - Ball_Y_Pos;
     assign Size = Ball_Size;
-    assign Ball_x_dis = Ball_x;
-    assign Ball_y_dis = Ball_y;
  
     always_comb begin
         if ( ( DistX*DistX + DistY*DistY) <= (Size*Size) )
 		begin
             is_ball = 1'b1;
-            Ball_x = DrawX - Ball_X_Pos;
-            Ball_y = DrawY - Ball_Y_Pos;
+            Ball_x_dis = DrawX - Ball_X_Pos;
+            Ball_y_dis = DrawY - Ball_Y_Pos;
         end
         else
         begin
             is_ball = 1'b0;
-            Ball_x = 9'b0;
-            Ball_y = 9'b0;
+            Ball_x_dis = 9'b0;
+            Ball_y_dis = 9'b0;
         end
         /* The ball's (pixelated) circle is generated using the standard circle formula.  Note that while
            the single line is quite powerful descriptively, it causes the synthesis tool to use up three
