@@ -24,14 +24,14 @@ module  ball ( input         Clk,                // 50 MHz clock
               );
 
     parameter [9:0] Ball_X_Center = 10'd320;  // Center position on the X axis
-    parameter [9:0] Ball_Y_Center = 10'd20;  // Center position on the Y axis
+    parameter [9:0] Ball_Y_Center = 10'd70;  // Center position on the Y axis
     parameter [9:0] Ball_X_Min = 10'd160;       // Leftmost point on the X axis
     parameter [9:0] Ball_X_Max = 10'd480;     // Rightmost point on the X axis
     parameter [9:0] Ball_Y_Min = 10'd0;       // Topmost point on the Y axis
     parameter [9:0] Ball_Y_Max = 10'd479;     // Bottommost point on the Y axis
     parameter [9:0] Ball_X_Step = 10'd1;      // Step size on the X axis
     parameter [9:0] Ball_Y_Step = 10'd1;      // Step size on the Y axis
-    parameter [9:0] Ball_Size = 10'd10;        // Ball size
+    parameter [9:0] Ball_Size = 10'd64;        // Ball size
 
     logic [9:0] Ball_X_Pos, Ball_X_Motion, Ball_Y_Pos, Ball_Y_Motion, Ball_x, Ball_y;
     logic [9:0] Ball_X_Pos_in, Ball_X_Motion_in, Ball_Y_Pos_in, Ball_Y_Motion_in;
@@ -122,13 +122,13 @@ module  ball ( input         Clk,                // 50 MHz clock
 
                 // TODO: Add other boundary detections and handle keypress here.
 
-                else if( Ball_X_Pos + Ball_Size >= Ball_X_Max )  // Ball is at the right edge, BOUNCE!
+                else if( Ball_X_Pos >= Ball_X_Max )  // Ball is at the right edge, BOUNCE!
 						 begin
 							//   Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);  // 2's complement.
                               Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);  // 2's complement.
 							  Ball_Y_Motion_in = 0;
 						 end
-                else if ( Ball_X_Pos <= Ball_X_Min + Ball_Size )  // Ball is at the left edge, BOUNCE!
+                else if ( Ball_X_Pos <= Ball_X_Min)  // Ball is at the left edge, BOUNCE!
 						 begin
 							  Ball_X_Motion_in = Ball_X_Step;
 							  Ball_Y_Motion_in = 0;
@@ -161,7 +161,7 @@ module  ball ( input         Clk,                // 50 MHz clock
     assign Size = Ball_Size;
  
     always_comb begin
-        if ( ( DistX*DistX + DistY*DistY) <= (Size*Size) )
+        if ( DistX >= ((~Size) + 1) && DistX <= Size && DistY >= ((~Size) + 1) && DistY <= Size)
 		begin
             is_ball = 1'b1;
             Ball_x_dis = DrawX - Ball_X_Pos;
