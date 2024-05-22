@@ -75,6 +75,7 @@ module lab8( input               CLOCK_50,
     logic timer_done;
 
     //turn related
+    logic controllable; //is revolver controllable
     logic last_player;
 
     
@@ -131,11 +132,11 @@ module lab8( input               CLOCK_50,
     VGA_controller vga_controller_instance(.Clk, .Reset(Reset_h),.*);
     
     // Which signal should be frame_clk?
-    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .DrawX, .DrawY, .keycode, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
+    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .controllable .DrawX, .DrawY, .keycode, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
     random random_instance(.Clk, .Reset(Reset_h), .count(random_num));
     timer timer_instance(.Clk, .Reset(Reset_h), .Start(timer_start), .Done(timer_done));
     game_state game_state_instance (.Clk, .Reset(Reset_h), .next_state(next_game_state), .state(cur_game_state));
-    revolver_state revolver_state_instance (.Clk, .Reset(Reset_h), .next_state(next_revolver_state), .state(cur_revolver_state));
+    //revolver_state revolver_state_instance (.Clk, .Reset(Reset_h), .next_state(next_revolver_state), .state(cur_revolver_state));
 
     color_mapper color_instance(.*);
     
@@ -155,6 +156,7 @@ module lab8( input               CLOCK_50,
 		  LEDG = 8'b0000;
         timer_start = 1'b0;
         last_player = 1'b0;
+        controllable = 1'b0;
 		  next_game_state = cur_game_state;
         
 		  case(keycode)
@@ -183,38 +185,54 @@ module lab8( input               CLOCK_50,
             end
 
             4'b0001: begin // Player 1's turn
-                if (keycode == 8'h2c) begin // presses space, meaning pull trigger
-                    if (random_num == 3'd0) begin
-                        // fire!
-                        if (revolver_target == 2'd00) begin
-                            next_game_state = 4'b0100;
+                controllable = 1'b1;
+                if (revolver_target != 2'd10)
+                begin
+                    if (keycode == 8'h2c) begin // presses space, meaning pull trigger
+                        if (random_num == 3'd0) begin
+                            // fire!
+                            if (revolver_target == 2'd00) begin
+                                next_game_state = 4'b0100;
+                            end else begin
+                                next_game_state = 4'b0101;
+                            end
                         end else begin
-                            next_game_state = 4'b0101;
+                            // click. not fired
+                            next_game_state = 4'b0011; // wait.
                         end
                     end else begin
-                        // click. not fired
-                        next_game_state = 4'b0011; // wait.
+                        next_game_state = 4'b0001;
                     end
-                end else begin
+                end
+                else
+                begin
                     next_game_state = 4'b0001;
                 end
                 last_player = 1'b0;
             end
 
             4'b0010: begin // Player 2's turn
-                if (keycode == 8'h2c) begin // presses space, meaning pull trigger
-                    if (random_num == 3'd0) begin
-                        // fire!
-                        if (revolver_target == 2'd00) begin
-                            next_game_state = 4'b0100;
+                controllable = 1'b1;
+                if (revolver_target != 2'b10)
+                begin
+                    if (keycode == 8'h2c) begin // presses space, meaning pull trigger
+                        if (random_num == 3'd0) begin
+                            // fire!
+                            if (revolver_target == 2'd00) begin
+                                next_game_state = 4'b0100;
+                            end else begin
+                                next_game_state = 4'b0101;
+                            end
                         end else begin
-                            next_game_state = 4'b0101;
+                            // click. not fired
+                            next_game_state = 4'b0011; // wait.
                         end
                     end else begin
-                        // click. not fired
-                        next_game_state = 4'b0011; // wait.
+                        next_game_state = 4'b0010;
                     end
-                end else begin
+                end
+                else
+                begin
                     next_game_state = 4'b0010;
                 end
 
