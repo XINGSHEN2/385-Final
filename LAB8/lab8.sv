@@ -58,15 +58,22 @@ module lab8( input               CLOCK_50,
     logic [1:0] hpi_addr;
     logic [15:0] hpi_data_in, hpi_data_out;
     logic hpi_r, hpi_w, hpi_cs, hpi_reset;
-	 
-	 // new middle valiables
-	 logic [9:0] DrawX,DrawY,Ball_x_dis,Ball_y_dis;
-	 logic is_ball;
-     logic revolver_target;
-     logic[3:0] next_game_state;
-     logic[2:0] next_revolver_state;
-     logic[3:0] cur_game_state;
-     logic[2:0] cur_revolver_state;
+
+	// new middle valiables
+	logic [9:0] DrawX,DrawY,Ball_x_dis,Ball_y_dis;
+	logic is_ball;
+    logic revolver_target;
+    logic[3:0] next_game_state;
+    logic[2:0] next_revolver_state;
+    logic[3:0] cur_game_state;
+    logic[2:0] cur_revolver_state;
+
+    logic[2:0] random_num;//random number to determine if there is a bullet
+
+    //timer related
+    logic timer_start;
+    logic timer_done;
+
     
     // Interface between NIOS II and EZ-OTG chip
     hpi_io_intf hpi_io_inst(
@@ -122,6 +129,8 @@ module lab8( input               CLOCK_50,
     
     // Which signal should be frame_clk?
     ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .DrawX, .DrawY, .keycode, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
+    random random_instance(.Clk, .Reset, .count(random_num))
+    timer timer_instance(.Clk, .Reset, .Start(timer_start), .Done(timer_done))
     game_state game_state_instance (.Clk, .Reset(Reset_h), .next_state(next_game_state), .state(cur_game_state))
     revolver_state revolver_state_instance (.Clk, .Reset(Reset_h), .next_state(next_revolver_state), .state(cur_revolver_state))
 
@@ -157,33 +166,63 @@ module lab8( input               CLOCK_50,
 		  endcase
 
          //Game State logic
-         case (cur_game_state)
-            4'b0000: begin //IDLE
-                if (keycode == 8'h28)
-                begin
-                    next_game_state = 4'b0001
+        case (cur_game_state)
+            4'b0000: begin // IDLE
+                if (keycode == 8'h28) begin
+                    next_game_state = 4'b0001;
+                end else begin
+                    next_game_state = 4'b0000;
                 end
             end
-            4'b0001: begin //Player 1's turn
-                if (keycode == 8'h2c)
-                begin
 
+            4'b0001: begin // Player 1's turn
+                if (keycode == 8'h2c) begin // presses space, meaning pull trigger
+                    if (random_num == 3'd0) begin
+                        // fire!
+                        if (revolver_target == 2'd00) begin
+                            next_game_state = 4'b0100;
+                        end else begin
+                            next_game_state = 4'b0101;
+                        end
+                    end else begin
+                        // click. not fired
+                        next_game_state = 4'b0011; // wait.
+                    end
+                end else begin
+                    next_game_state = 4'b0001;
                 end
             end
-            FIRED: begin
-                if (end_game)
-                    next_state = STAY;
+
+            4'b0010: begin // Player 2's turn
+                if (keycode == 8'h2c) begin // presses space, meaning pull trigger
+                    if (random_num == 3'd0) begin
+                        // fire!
+                        if (revolver_target == 2'd00) begin
+                            next_game_state = 4'b0100;
+                        end else begin
+                            next_game_state = 4'b0101;
+                        end
+                    end else begin
+                        // click. not fired
+                        next_game_state = 4'b0011; // wait.
+                    end
+                end else begin
+                    next_game_state = 4'b0010;
+                end
             end
-            STAY: begin
-                if (start_game)
-                    next_state = IDLE;
+
+            4'b0011: begin
+                
             end
+
+            // Add other states here as needed
+
             default: begin
-                next_state = IDLE;
+                next_game_state = 4'b0000; // default state
             end
         endcase
 
-		 end
+		end
 
 
 	 
