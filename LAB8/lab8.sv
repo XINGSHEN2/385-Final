@@ -62,6 +62,11 @@ module lab8( input               CLOCK_50,
 	 // new middle valiables
 	 logic [9:0] DrawX,DrawY,Ball_x_dis,Ball_y_dis;
 	 logic is_ball;
+     logic revolver_target;
+     logic[3:0] next_game_state;
+     logic[2:0] next_revolver_state;
+     logic[3:0] cur_game_state;
+     logic[2:0] cur_revolver_state;
     
     // Interface between NIOS II and EZ-OTG chip
     hpi_io_intf hpi_io_inst(
@@ -116,8 +121,10 @@ module lab8( input               CLOCK_50,
     VGA_controller vga_controller_instance(.Clk, .Reset(Reset_h),.*);
     
     // Which signal should be frame_clk?
-    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .DrawX, .DrawY, .keycode, .is_ball, .Ball_x_dis, .Ball_y_dis);
-    
+    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .DrawX, .DrawY, .keycode, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
+    game_state game_state_instance (.Clk, .Reset(Reset_h), .next_state(next_game_state), .state(cur_game_state))
+    revolver_state revolver_state_instance (.Clk, .Reset(Reset_h), .next_state(next_revolver_state), .state(cur_revolver_state))
+
     color_mapper color_instance(.*);
     
     // Display keycode on hex display
@@ -148,7 +155,37 @@ module lab8( input               CLOCK_50,
 				  LEDG = 8'b0100;
 				 end
 		  endcase
+
+         //Game State logic
+         case (cur_game_state)
+            4'b0000: begin //IDLE
+                if (keycode == 8'h28)
+                begin
+                    next_game_state = 4'b0001
+                end
+            end
+            4'b0001: begin //Player 1's turn
+                if (keycode == 8'h2c)
+                begin
+
+                end
+            end
+            FIRED: begin
+                if (end_game)
+                    next_state = STAY;
+            end
+            STAY: begin
+                if (start_game)
+                    next_state = IDLE;
+            end
+            default: begin
+                next_state = IDLE;
+            end
+        endcase
+
 		 end
+
+
 	 
 	 
 	 
