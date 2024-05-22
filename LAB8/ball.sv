@@ -20,6 +20,7 @@ module  ball ( input         Clk,                // 50 MHz clock
                              controllable,
                input [9:0]   DrawX, DrawY,       // Current pixel coordinates
                input [7:0]   keycode,
+               input pos_return,
                output logic  is_ball,             // Whether current pixel belongs to ball or background
                output logic  [1:0] revolver_target,     // 0 for player A, 1 for player B, 2 for in the way
                output logic  [9:0] Ball_x_dis, Ball_y_dis
@@ -48,7 +49,7 @@ module  ball ( input         Clk,                // 50 MHz clock
     // Update registers
     always_ff @ (posedge Clk)
     begin
-        if (Reset)
+        if (Reset || pos_return)
         begin
             Ball_X_Pos <= Ball_X_Center;
             Ball_Y_Pos <= Ball_Y_Center;
@@ -73,6 +74,11 @@ module  ball ( input         Clk,                // 50 MHz clock
         Ball_Y_Pos_in = Ball_Y_Pos;
         Ball_X_Motion_in = Ball_X_Motion;
         Ball_Y_Motion_in = Ball_Y_Motion;
+
+        if (pos_return)
+        begin
+
+        end
 
         // Update position and motion only at rising edge of frame clock
         if (frame_clk_rising_edge && controllable == 1)

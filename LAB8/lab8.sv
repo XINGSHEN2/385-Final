@@ -77,6 +77,7 @@ module lab8( input               CLOCK_50,
     //turn related
     logic controllable; //is revolver controllable
     logic last_player;
+    logic pos_return; //reset pos of revolver
 
     
     // Interface between NIOS II and EZ-OTG chip
@@ -132,7 +133,7 @@ module lab8( input               CLOCK_50,
     VGA_controller vga_controller_instance(.Clk, .Reset(Reset_h),.*);
     
     // Which signal should be frame_clk?
-    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .controllable, .DrawX, .DrawY, .keycode, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
+    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .controllable, .DrawX, .DrawY, .keycode, pos_return, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
     random random_instance(.Clk, .Reset(Reset_h), .count(random_num));
     timer timer_instance(.Clk, .Reset(Reset_h), .Start(timer_start), .Done(timer_done));
     game_state game_state_instance (.Clk, .Reset(Reset_h), .next_state(next_game_state), .state(cur_game_state));
@@ -157,6 +158,7 @@ module lab8( input               CLOCK_50,
         timer_start = 1'b0;
         last_player = 1'b0;
         controllable = 1'b0;
+        pos_return = 1'b0;
 		  next_game_state = cur_game_state;
         
 		  case(keycode)
@@ -259,29 +261,37 @@ module lab8( input               CLOCK_50,
             end
 
             4'b0100: begin //player 1 dead
-                //wait 2 seconds
-                timer_start = 1'b1;
-                if (timer_done == 1'b1)
+                if (keycode == 8'h28) //press R to restart
                 begin
                     next_game_state = 4'b0110;
                 end
+                else
+                begin
+                    next_game_state = 4'b0100;
+                end
             end
 
-            4'b0101: begin //player 1 dead
-                //wait 2 seconds
-                timer_start = 1'b1;
-                if (timer_done == 1'b1)
+            4'b0101: begin //player 2 dead
+                if (keycode == 8'h28) //press R to restart
                 begin
                     next_game_state = 4'b0110;
                 end
+                else
+                begin
+                    next_game_state = 4'b0101;
+                end
             end
 
-            4'b0110: begin //EndGame
-                if (keycode == 8'h15) //press R to restart
+            4'b0110: begin //EndGameReset
+                pos_return = 1'b1;
+                if (last_player == 1'b0)
                 begin
-                    next_game_state = 4'b0000;
+                    next_game_state = 4'b0010;
                 end
-
+                else
+                begin 
+                    next_game_state = 4'b0001;
+                end
             end
 
         endcase
