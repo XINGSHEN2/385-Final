@@ -74,6 +74,9 @@ module lab8( input               CLOCK_50,
     logic timer_start;
     logic timer_done;
 
+    //turn related
+    logic last_player;
+
     
     // Interface between NIOS II and EZ-OTG chip
     hpi_io_intf hpi_io_inst(
@@ -149,7 +152,11 @@ module lab8( input               CLOCK_50,
 	  always_comb
 		 begin
 		 // default case
-		 LEDG = 8'b0000;
+		LEDG = 8'b0000;
+        timer_start = 1'b0;
+        timer_done = 1'b0;
+        last_player = 1'b0;
+        
 		  case(keycode)
 			  8'h04: begin
 				  LEDG = 8'b0010;
@@ -191,6 +198,7 @@ module lab8( input               CLOCK_50,
                 end else begin
                     next_game_state = 4'b0001;
                 end
+                last_player = 1'b0;
             end
 
             4'b0010: begin // Player 2's turn
@@ -209,9 +217,30 @@ module lab8( input               CLOCK_50,
                 end else begin
                     next_game_state = 4'b0010;
                 end
+
+                last_player = 1'b1;
             end
 
-            4'b0011: begin
+            4'b0011: begin //wait 2 seconds
+                timer_start = 1'b1;
+                if (timer_done == 1'b1)
+                begin
+                    if (last_player == 1'b0)
+                    begin
+                        next_game_state = 4'b0010;
+                    end
+                    else
+                    begin
+                        next_game_state = 4'b0001;
+                    end
+                end
+                else
+                begin
+                    next_game_state = 4'b0011;
+                end
+            end
+
+            4'b0100: begin //player 1 dead
                 
             end
 
@@ -224,9 +253,4 @@ module lab8( input               CLOCK_50,
 
 		end
 
-
-	 
-	 
-	 
-	 
 endmodule
