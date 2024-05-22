@@ -1,4 +1,4 @@
-17:09:20 **** Build of configuration Nios II for project usb_key ****
+16:12:23 **** Incremental Build of configuration Nios II for project usb_key ****
 make all 
 Info: Building ../usb_key_bsp/
 C:/intelFPGA_lite/18.1/nios2eds/bin/gnu/H-x86_64-mingw32/bin/make --no-print-directory -C ../usb_key_bsp/
@@ -17,5 +17,5 @@ To generate from the command line:
 make[1]: *** [public.mk] Error 1
 make: *** [../usb_key_bsp/-recurs-make-lib] Error 2
 
-17:09:21 Build Finished (took 780ms)
+16:12:24 Build Finished (took 1s.601ms)
 

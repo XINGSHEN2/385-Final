@@ -24,7 +24,7 @@ module  ball ( input         Clk,                // 50 MHz clock
               );
 
     parameter [9:0] Ball_X_Center = 10'd320;  // Center position on the X axis
-    parameter [9:0] Ball_Y_Center = 10'd70;  // Center position on the Y axis
+    parameter [9:0] Ball_Y_Center = 10'd64;  // Center position on the Y axis
     parameter [9:0] Ball_X_Min = 10'd160;       // Leftmost point on the X axis
     parameter [9:0] Ball_X_Max = 10'd480;     // Rightmost point on the X axis
     parameter [9:0] Ball_Y_Min = 10'd0;       // Topmost point on the Y axis
@@ -75,6 +75,18 @@ module  ball ( input         Clk,                // 50 MHz clock
         // Update position and motion only at rising edge of frame clock
         if (frame_clk_rising_edge)
             begin
+                if( Ball_X_Pos >= Ball_X_Max )  // Ball is at the right edge, BOUNCE!
+						 begin
+							//   Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);  // 2's complement.
+                              Ball_X_Motion_in = 0;  // 2's complement.
+							  Ball_Y_Motion_in = 0;
+						 end
+                else if ( Ball_X_Pos <= Ball_X_Min)  // Ball is at the left edge, BOUNCE!
+						 begin
+							  Ball_X_Motion_in = 0;
+							  Ball_Y_Motion_in = 0;
+						 end
+
                 case (keycode)
                     // W
                     // 8'h1a :
@@ -85,8 +97,16 @@ module  ball ( input         Clk,                // 50 MHz clock
                     // A
                     8'h04 :
                         begin
-                            Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
-                            Ball_Y_Motion_in = 10'h000;
+                            if(Ball_X_Pos <= Ball_X_Min)
+                            begin
+                                Ball_X_Motion_in = 10'h000;
+                                Ball_Y_Motion_in = 10'h000;
+                            end
+                            else
+                            begin
+                                Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);
+                                Ball_Y_Motion_in = 10'h000;
+                            end
                         end
                     // // S
                     // 8'h16 :
@@ -97,42 +117,22 @@ module  ball ( input         Clk,                // 50 MHz clock
                     // D
                     8'h07 :
                         begin
-                            Ball_X_Motion_in = Ball_X_Step;
-                            Ball_Y_Motion_in = 10'h000;
+                            if(Ball_X_Pos >= Ball_X_Max)
+                            begin
+                                Ball_X_Motion_in = 10'h000;
+                                Ball_Y_Motion_in = 10'h000;
+                            end
+                            else
+                            begin
+                                Ball_X_Motion_in = Ball_X_Step;
+                                Ball_Y_Motion_in = 10'h000;
+                            end
                         end
                     default:
                         begin
                         end
                 endcase
 
-                // Be careful when using comparators with "logic" datatype because compiler treats
-                //   both sides of the operator as UNSIGNED numbers.
-                // e.g. Ball_Y_Pos - Ball_Size <= Ball_Y_Min
-                // If Ball_Y_Pos is 0, then Ball_Y_Pos - Ball_Size will not be -4, but rather a large positive number.
-                if( Ball_Y_Pos + Ball_Size >= Ball_Y_Max )  // Ball is at the bottom edge, BOUNCE!
-						 begin
-							  Ball_Y_Motion_in = (~(Ball_Y_Step) + 1'b1);  // 2's complement.
-							  Ball_X_Motion_in = 0;
-						 end
-                else if ( Ball_Y_Pos <= Ball_Y_Min + Ball_Size )  // Ball is at the top edge, BOUNCE!
-						 begin
-							  Ball_Y_Motion_in = Ball_Y_Step;
-							  Ball_X_Motion_in = 0;
-						 end
-
-                // TODO: Add other boundary detections and handle keypress here.
-
-                else if( Ball_X_Pos >= Ball_X_Max )  // Ball is at the right edge, BOUNCE!
-						 begin
-							//   Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);  // 2's complement.
-                              Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);  // 2's complement.
-							  Ball_Y_Motion_in = 0;
-						 end
-                else if ( Ball_X_Pos <= Ball_X_Min)  // Ball is at the left edge, BOUNCE!
-						 begin
-							  Ball_X_Motion_in = Ball_X_Step;
-							  Ball_Y_Motion_in = 0;
-						 end
 					 
                 // Update the ball's position with its motion
                 Ball_X_Pos_in = Ball_X_Pos + Ball_X_Motion;
@@ -162,6 +162,7 @@ module  ball ( input         Clk,                // 50 MHz clock
  
     always_comb begin
         if ( DistX >= ((~Size) + 1) && DistX <= Size && DistY >= ((~Size) + 1) && DistY <= Size)
+        // if ( ( DistX*DistX + DistY*DistY) <= (Size*Size) )
 		begin
             is_ball = 1'b1;
             Ball_x_dis = DrawX - Ball_X_Pos;

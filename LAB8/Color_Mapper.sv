@@ -46,6 +46,9 @@ module  color_mapper ( input              is_ball,            // Whether current
                 Red = {Red_cat, 4'b0000};
                 Green = {Green_cat, 4'b0000};
                 Blue = {Blue_cat, 4'b0000};
+                // Red = 8'd128;
+                // Green = 8'd128;
+                // Blue = 8'd128;
             end
             else
             begin
@@ -57,6 +60,9 @@ module  color_mapper ( input              is_ball,            // Whether current
         else 
         begin
             // Background with nice color gradient
+            // Red = 8'd128;
+            // Green = 8'd128;
+            // Blue = 8'd128;
             Red = {Red_cat, 4'b0000};
             Green = {Green_cat, 4'b0000};
             Blue = {Blue_cat, 4'b0000};
