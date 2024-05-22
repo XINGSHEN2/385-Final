@@ -25,6 +25,7 @@ module  color_mapper ( input              is_ball,            // Whether current
     logic [7:0] Red, Green, Blue;
     logic [3:0] Red_Right, Green_Right, Blue_Right;
     logic [3:0] Red_buckshot, Green_buckshot, Blue_buckshot;
+    logic [3:0] Red_BG_Idle, Green_BG_Idle, Blue_BG_Idle;
     logic [3:0] Red_BG_Idle_Pistol, Green_BG_Idle_Pistol, Blue_BG_Idle_Pistol;
     logic [3:0] Red_BG_Blue_Dead, Green_BG_Blue_Dead, Blue_BG_Blue_Dead;
     logic [3:0] Red_BG_Red_Dead, Green_BG_Red_Dead, Blue_BG_Red_Dead;
@@ -41,7 +42,7 @@ module  color_mapper ( input              is_ball,            // Whether current
     BG_Idle_Pistol_example BG_Idle_Pistol_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Idle_Pistol), .blue(Blue_BG_Idle_Pistol), .green(Green_BG_Idle_Pistol));
     BG_Blue_Dead_example BG_Blue_Dead_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Blue_Dead), .blue(Blue_BG_Blue_Dead), .green(Green_BG_Blue_Dead));
     BG_Red_Dead_example BG_Red_Dead_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Red_Dead), .blue(Blue_BG_Red_Dead), .green(Green_BG_Red_Dead));
-
+    BG_Idle_example BG_Idle_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Idle), .blue(Blue_BG_Idle), .green(Green_BG_Idle));
 
     // Assign color based on is_ball signal
     // always_comb
@@ -84,9 +85,71 @@ module  color_mapper ( input              is_ball,            // Whether current
                 Green = {Green_BG_Idle_Pistol, 4'b0000};
                 Blue = {Blue_BG_Idle_Pistol, 4'b0000};
                 end
+            4'b0001 : // PLAYER2TURN
+                begin
+                if (is_ball == 1'b1) 
+                begin
+                // Revolver
+                    if (Red_Right == 0 && Green_Right == 0 && Blue_Right == 0)
+                    begin
+                        Red = {Red_BG_Idle, 4'b0000};
+                        Green = {Green_BG_Idle, 4'b0000};
+                        Blue = {Blue_BG_Idle, 4'b0000};
+                    end
+                    else
+                    begin
+                        Red = {Red_Right, 4'b0000};
+                        Green = {Green_Right, 4'b0000};
+                        Blue = {Blue_Right, 4'b0000};
+                    end
+                end
+                else 
+                begin
+                    Red = {Red_BG_Idle, 4'b0000};
+                    Green = {Green_BG_Idle, 4'b0000};
+                    Blue = {Blue_BG_Idle, 4'b0000};
+                end
+                end
+            4'b0001 : // PLAYER1TURN
+                begin
+                if (is_ball == 1'b1) 
+                begin
+                // Revolver
+                    if (Red_Right == 0 && Green_Right == 0 && Blue_Right == 0)
+                    begin
+                        Red = {Red_BG_Idle, 4'b0000};
+                        Green = {Green_BG_Idle, 4'b0000};
+                        Blue = {Blue_BG_Idle, 4'b0000};
+                    end
+                    else
+                    begin
+                        Red = {Red_Right, 4'b0000};
+                        Green = {Green_Right, 4'b0000};
+                        Blue = {Blue_Right, 4'b0000};
+                    end
+                end
+                else 
+                begin
+                    Red = {Red_BG_Idle, 4'b0000};
+                    Green = {Green_BG_Idle, 4'b0000};
+                    Blue = {Blue_BG_Idle, 4'b0000};
+                end
+                end
+            4'b0100 : // player 1 down
+                begin
+                Red = {Red_BG_Red_Dead, 4'b0000};
+                Green = {Green_BG_Red_Dead, 4'b0000};
+                Blue = {Blue_BG_Red_Dead, 4'b0000};
+                end
+            4'b0100 : // player 2 down
+                begin
+                Red = {Red_BG_Blue_Dead, 4'b0000};
+                Green = {Green_BG_Blue_Dead, 4'b0000};
+                Blue = {Blue_BG_Blue_Dead, 4'b0000};
+                end
             default:
                 begin
-					 Red = {Red_buckshot, 4'b0000};
+				Red = {Red_buckshot, 4'b0000};
                 Green = {Green_buckshot, 4'b0000};
                 Blue = {Blue_buckshot, 4'b0000};
                 end
