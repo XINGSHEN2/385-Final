@@ -54,17 +54,29 @@ module  color_mapper ( input              is_ball,            // Whether current
         4'b0100 : // player 1 down
         begin
         Red_red = Red_red_die;
+        Green_red = Green_red_die;
+        Blue_red = Blue_red_die;
         Red_blue = Red_blue_sit;
+        Green_blue = Green_blue_sit;
+        Blue_blue = Blue_blue_sit;
         end
-        4'b0100 : // player 2 down
+        4'b0101 : // player 2 down
         begin
         Red_red = Red_red_sit;
+        Green_red = Green_red_sit;
+        Blue_red = Blue_red_sit;
         Red_blue = Red_blue_die;
+        Green_blue = Green_blue_die;
+        Blue_blue = Blue_blue_die;
         end
         default :
         begin
         Red_red = Red_red_sit;
+        Green_red = Green_red_sit;
+        Blue_red = Blue_red_sit;
         Red_blue = Red_blue_sit;
+        Green_blue = Green_blue_sit;
+        Blue_blue = Blue_blue_sit;
         end
         endcase
     end

@@ -68513,21 +68513,6 @@ state[2] <= current_state[2].DB_MAX_OUTPUT_PORT_TYPE
 state[3] <= current_state[3].DB_MAX_OUTPUT_PORT_TYPE
 
 
-|lab8|revolver_state:revolver_state_instance
-Clk => current_state[0].CLK
-Clk => current_state[1].CLK
-Clk => current_state[2].CLK
-Reset => current_state[0].ACLR
-Reset => current_state[1].ACLR
-Reset => current_state[2].ACLR
-next_state[0] => current_state[0].DATAIN
-next_state[1] => current_state[1].DATAIN
-next_state[2] => current_state[2].DATAIN
-state[0] <= current_state[0].DB_MAX_OUTPUT_PORT_TYPE
-state[1] <= current_state[1].DB_MAX_OUTPUT_PORT_TYPE
-state[2] <= current_state[2].DB_MAX_OUTPUT_PORT_TYPE
-
-
 |lab8|color_mapper:color_instance
 is_ball => Red.OUTPUTSELECT
 is_ball => Red.OUTPUTSELECT
@@ -68583,13 +68568,17 @@ Ball_y_dis[7] => Add1.IN7
 Ball_y_dis[8] => Add1.IN6
 Ball_y_dis[9] => Add1.IN5
 cur_game_state[0] => Equal0.IN7
-cur_game_state[0] => Equal7.IN7
+cur_game_state[0] => Equal1.IN7
+cur_game_state[0] => Equal11.IN7
 cur_game_state[1] => Equal0.IN6
-cur_game_state[1] => Equal7.IN6
+cur_game_state[1] => Equal1.IN6
+cur_game_state[1] => Equal11.IN6
 cur_game_state[2] => Equal0.IN5
-cur_game_state[2] => Equal7.IN5
+cur_game_state[2] => Equal1.IN5
+cur_game_state[2] => Equal11.IN5
 cur_game_state[3] => Equal0.IN4
-cur_game_state[3] => Equal7.IN4
+cur_game_state[3] => Equal1.IN4
+cur_game_state[3] => Equal11.IN4
 VGA_R[0] <= <GND>
 VGA_R[1] <= <GND>
 VGA_R[2] <= <GND>

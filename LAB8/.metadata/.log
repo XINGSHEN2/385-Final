@@ -7807,3 +7807,54 @@ java.lang.Exception
 
 !ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 20:55:51.133
 !MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --go --accept-bad-sysid --sidp=0xa8 /cygdrive/e/ECE385/385-Final/LAB8/software/usb_key/usb_key.elf]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:13:33.984
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --stop --accept-bad-sysid --sidp=0xa8]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:13:35.934
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --go --accept-bad-sysid --sidp=0xa8 /cygdrive/e/ECE385/385-Final/LAB8/software/usb_key/usb_key.elf]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:14:39.614
+!MESSAGE Terminated Launch with connection: 10USB-Blaster on localhost [USB-0]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:14:40.264
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --stop --accept-bad-sysid --sidp=0xa8]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:14:42.130
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --go --accept-bad-sysid --sidp=0xa8 /cygdrive/e/ECE385/385-Final/LAB8/software/usb_key/usb_key.elf]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:23:08.371
+!MESSAGE Terminated Launch with connection: 10USB-Blaster on localhost [USB-0]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:23:09.152
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --stop --accept-bad-sysid --sidp=0xa8]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:23:10.860
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --stop --accept-bad-sysid --sidp=0xa8]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:23:11.601
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --go --accept-bad-sysid --sidp=0xa8 /cygdrive/e/ECE385/385-Final/LAB8/software/usb_key/usb_key.elf]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:23:13.507
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --go --accept-bad-sysid --sidp=0xa8 /cygdrive/e/ECE385/385-Final/LAB8/software/usb_key/usb_key.elf]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:23:36.343
+!MESSAGE Terminated Launch with connection: 10USB-Blaster on localhost [USB-0]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:23:37.152
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --stop --accept-bad-sysid --sidp=0xa8]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:23:39.041
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --go --accept-bad-sysid --sidp=0xa8 /cygdrive/e/ECE385/385-Final/LAB8/software/usb_key/usb_key.elf]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:28:55.799
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --stop --accept-bad-sysid --sidp=0xa8]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:28:57.711
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --go --accept-bad-sysid --sidp=0xa8 /cygdrive/e/ECE385/385-Final/LAB8/software/usb_key/usb_key.elf]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:31:20.244
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --stop --accept-bad-sysid --sidp=0xa8]
+
+!ENTRY com.altera.sbtgui.launch 1 0 2024-05-22 21:31:22.159
+!MESSAGE Executing: [C:/intelfpga_lite/18.1/quartus\bin64\cygwin\bin\bash.exe, -c, nios2-download '--cable=USB-Blaster on localhost [USB-0]' --device=1 --instance=0 --go --accept-bad-sysid --sidp=0xa8 /cygdrive/e/ECE385/385-Final/LAB8/software/usb_key/usb_key.elf]

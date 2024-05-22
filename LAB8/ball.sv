@@ -80,7 +80,7 @@ module  ball ( input         Clk,                // 50 MHz clock
                 if( Ball_X_Pos >= Ball_X_Max )  // Ball is at the right edge, BOUNCE!
 						 begin
 							//   Ball_X_Motion_in = (~(Ball_X_Step) + 1'b1);  // 2's complement.
-                              Ball_X_Motion_in = 0;  // 2's complement.
+                       Ball_X_Motion_in = 0;  // 2's complement.
 							  Ball_Y_Motion_in = 0;
 						 end
                 else if ( Ball_X_Pos <= Ball_X_Min)  // Ball is at the left edge, BOUNCE!
@@ -178,11 +178,11 @@ module  ball ( input         Clk,                // 50 MHz clock
             Ball_y_dis = 9'b0;
         end
 
-        if (Ball_X_Pos == 160)
+        if (Ball_X_Pos <= 160)
         begin
             revolver_state = 2'b00;
         end
-        else if (Ball_X_Pos ==480)
+        else if (Ball_X_Pos >=480)
         begin
             revolver_state = 2'b01;
         end

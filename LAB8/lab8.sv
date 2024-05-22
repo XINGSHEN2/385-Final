@@ -132,7 +132,7 @@ module lab8( input               CLOCK_50,
     VGA_controller vga_controller_instance(.Clk, .Reset(Reset_h),.*);
     
     // Which signal should be frame_clk?
-    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .controllable .DrawX, .DrawY, .keycode, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
+    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .controllable, .DrawX, .DrawY, .keycode, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
     random random_instance(.Clk, .Reset(Reset_h), .count(random_num));
     timer timer_instance(.Clk, .Reset(Reset_h), .Start(timer_start), .Done(timer_done));
     game_state game_state_instance (.Clk, .Reset(Reset_h), .next_state(next_game_state), .state(cur_game_state));
@@ -189,17 +189,17 @@ module lab8( input               CLOCK_50,
                 if (revolver_target != 2'd10)
                 begin
                     if (keycode == 8'h2c) begin // presses space, meaning pull trigger
-                        if (random_num == 3'd0) begin
+                        //if (random_num == 3'd0) begin
                             // fire!
                             if (revolver_target == 2'd00) begin
                                 next_game_state = 4'b0100;
                             end else begin
                                 next_game_state = 4'b0101;
                             end
-                        end else begin
+                        //end else begin
                             // click. not fired
-                            next_game_state = 4'b0011; // wait.
-                        end
+                        //    next_game_state = 4'b0011; // wait.
+                        //end
                     end else begin
                         next_game_state = 4'b0001;
                     end
@@ -216,17 +216,17 @@ module lab8( input               CLOCK_50,
                 if (revolver_target != 2'b10)
                 begin
                     if (keycode == 8'h2c) begin // presses space, meaning pull trigger
-                        if (random_num == 3'd0) begin
+                        //if (random_num == 3'd0) begin
                             // fire!
                             if (revolver_target == 2'd00) begin
                                 next_game_state = 4'b0100;
                             end else begin
                                 next_game_state = 4'b0101;
                             end
-                        end else begin
+                        //end else begin
                             // click. not fired
-                            next_game_state = 4'b0011; // wait.
-                        end
+                        //    next_game_state = 4'b0011; // wait.
+                        //end
                     end else begin
                         next_game_state = 4'b0010;
                     end
