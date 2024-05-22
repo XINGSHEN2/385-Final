@@ -19,7 +19,8 @@ module  ball ( input         Clk,                // 50 MHz clock
                              frame_clk,          // The clock indicating a new frame (~60Hz)
                input [9:0]   DrawX, DrawY,       // Current pixel coordinates
                input [7:0]   keycode,
-               output logic  is_ball,             // Whether current pixel belongs to ball or background
+               output logic  is_ball             // Whether current pixel belongs to ball or background
+               output logic  revolver_target     // 0 for player A, 1 for player B
                output logic  [9:0] Ball_x_dis, Ball_y_dis
               );
 
