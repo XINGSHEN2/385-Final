@@ -221,7 +221,7 @@ module lab8( input               CLOCK_50,
                 last_player = 1'b1;
             end
 
-            4'b0011: begin //wait 2 seconds
+            4'b0011: begin //Sleep: wait 2 seconds
                 timer_start = 1'b1;
                 if (timer_done == 1'b1)
                 begin
@@ -241,7 +241,29 @@ module lab8( input               CLOCK_50,
             end
 
             4'b0100: begin //player 1 dead
-                
+                //wait 2 seconds
+                timer_start = 1'b1;
+                if (timer_done == 1'b1)
+                begin
+                    next_game_state = 4'b0110;
+                end
+            end
+
+            4'b0101: begin //player 1 dead
+                //wait 2 seconds
+                timer_start = 1'b1;
+                if (timer_done == 1'b1)
+                begin
+                    next_game_state = 4'b0110;
+                end
+            end
+
+            4'b0110: begin //EndGame
+                if (keycode == 8'h15) //press R to restart
+                begin
+                    next_game_state = 4'b0000;
+                end
+
             end
 
         endcase
