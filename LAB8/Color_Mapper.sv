@@ -18,11 +18,13 @@ module  color_mapper ( input              is_ball,            // Whether current
                         input               Clk,
                                                               //   or background (computed in ball.sv)
                        input        [9:0] DrawX, DrawY, Ball_x_dis, Ball_y_dis,      // Current pixel coordinates
+                       input        [3:0] game_state,
                        output logic [7:0] VGA_R, VGA_G, VGA_B // VGA RGB output
                      );
     
     logic [7:0] Red, Green, Blue;
-    logic [3:0] Red_cat, Green_cat, Blue_cat;
+    logic [3:0] Red_buckshot, Green_buckshot, Blue_buckshot;
+    logic [3:0] Red_BG_Idle_Pistol, Green_BG_Idle_Pistol, Blue_BG_Idle_Pistol;
     logic [3:0] Red_Right, Green_Right, Blue_Right;
     
     // Output colors to VGA
@@ -31,8 +33,10 @@ module  color_mapper ( input              is_ball,            // Whether current
     assign VGA_B = Blue;
 
     // change color to the destnation pixel
-    buckshot_example cat_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_cat), .blue(Blue_cat), .green(Green_cat));
+    buckshot_example buckshot_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_buckshot), .blue(Blue_buckshot), .green(Green_buckshot));
     Pistol_Scene_example Right_instance (.vga_clk(Clk), .DrawX(Ball_x_dis + 64), .DrawY(Ball_y_dis + 64), .blank(1'b1), .red(Red_Right), .blue(Blue_Right), .green(Green_Right));
+    BG_Idle_Pistol_example BG_Idle_Pistol_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Idle_Pistol), .blue(Blue_BG_Idle_Pistol), .green(Green_BG_Idle_Pistol))
+
 
 
     // Assign color based on is_ball signal
@@ -43,9 +47,9 @@ module  color_mapper ( input              is_ball,            // Whether current
             // Right
             if (Red_Right == 0 && Green_Right == 0 && Blue_Right == 0)
             begin
-                Red = {Red_cat, 4'b0000};
-                Green = {Green_cat, 4'b0000};
-                Blue = {Blue_cat, 4'b0000};
+                Red = {Red_buckshot, 4'b0000};
+                Green = {Green_buckshot, 4'b0000};
+                Blue = {Blue_buckshot, 4'b0000};
                 // Red = 8'd128;
                 // Green = 8'd128;
                 // Blue = 8'd128;
@@ -63,9 +67,9 @@ module  color_mapper ( input              is_ball,            // Whether current
             // Red = 8'd128;
             // Green = 8'd128;
             // Blue = 8'd128;
-            Red = {Red_cat, 4'b0000};
-            Green = {Green_cat, 4'b0000};
-            Blue = {Blue_cat, 4'b0000};
+            Red = {Red_buckshot, 4'b0000};
+            Green = {Green_buckshot, 4'b0000};
+            Blue = {Blue_buckshot, 4'b0000};
         end
     end 
     

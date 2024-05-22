@@ -17,10 +17,11 @@
 module  ball ( input         Clk,                // 50 MHz clock
                              Reset,              // Active-high reset signal
                              frame_clk,          // The clock indicating a new frame (~60Hz)
+                             controllable,
                input [9:0]   DrawX, DrawY,       // Current pixel coordinates
                input [7:0]   keycode,
                output logic  is_ball             // Whether current pixel belongs to ball or background
-               output logic  revolver_target     // 0 for player A, 1 for player B
+               output logic  [1:0] revolver_target     // 0 for player A, 1 for player B, 2 for in the way
                output logic  [9:0] Ball_x_dis, Ball_y_dis
               );
 
@@ -74,7 +75,7 @@ module  ball ( input         Clk,                // 50 MHz clock
         Ball_Y_Motion_in = Ball_Y_Motion;
 
         // Update position and motion only at rising edge of frame clock
-        if (frame_clk_rising_edge)
+        if (frame_clk_rising_edge && controllable == 1)
             begin
                 if( Ball_X_Pos >= Ball_X_Max )  // Ball is at the right edge, BOUNCE!
 						 begin
@@ -156,10 +157,11 @@ module  ball ( input         Clk,                // 50 MHz clock
     // Compute whether the pixel corresponds to ball or background
     /* Since the multiplicants are required to be signed, we have to first cast them
        from logic to int (signed by default) before they are multiplied. */
-    int DistX, DistY, Size;
+    int DistX, DistY, Size, revolver_state;
     assign DistX = DrawX - Ball_X_Pos;
     assign DistY = DrawY - Ball_Y_Pos;
     assign Size = Ball_Size;
+    assign revolver_target = revolver_state;
  
     always_comb begin
         if ( DistX >= ((~Size) + 1) && DistX <= Size && DistY >= ((~Size) + 1) && DistY <= Size)
@@ -175,9 +177,19 @@ module  ball ( input         Clk,                // 50 MHz clock
             Ball_x_dis = 9'b0;
             Ball_y_dis = 9'b0;
         end
-        /* The ball's (pixelated) circle is generated using the standard circle formula.  Note that while
-           the single line is quite powerful descriptively, it causes the synthesis tool to use up three
-           of the 12 available multipliers on the chip! */
+
+        if (Ball_X_Pos == 160)
+        begin
+            revolver_state = 2'b00;
+        end
+        else if (Ball_X_Pos ==480)
+        begin
+            revolver_state = 2'b01;
+        end
+        else
+        begin
+            revolver_state = 2'b10;
+        end
     end
 
 endmodule
