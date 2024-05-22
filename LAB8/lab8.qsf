@@ -589,14 +589,16 @@ set_global_assignment -name ENABLE_SIGNALTAP ON
 set_global_assignment -name USE_SIGNALTAP_FILE stp1.stp
 set_global_assignment -name FLOW_ENABLE_POWER_ANALYZER ON
 set_global_assignment -name POWER_DEFAULT_INPUT_IO_TOGGLE_RATE "12.5 %"
+set_global_assignment -name QIP_FILE background_empty/background_empty.qip
+set_global_assignment -name QIP_FILE red_sit/red_sit.qip
+set_global_assignment -name QIP_FILE red_die/red_die.qip
+set_global_assignment -name QIP_FILE blue_sit/blue_sit.qip
+set_global_assignment -name QIP_FILE blue_die/blue_die.qip
 set_global_assignment -name SYSTEMVERILOG_FILE random.sv
 set_global_assignment -name SYSTEMVERILOG_FILE timer.sv
 set_global_assignment -name SYSTEMVERILOG_FILE revolver_state.sv
 set_global_assignment -name SYSTEMVERILOG_FILE game_state.sv
 set_global_assignment -name QIP_FILE BG_Idle/BG_Idle.qip
-set_global_assignment -name QIP_FILE BG_Red_Dead/BG_Red_Dead.qip
-set_global_assignment -name QIP_FILE BG_Blue_Dead/BG_Blue_Dead.qip
-set_global_assignment -name QIP_FILE BG_Idle_Pistol/BG_Idle_Pistol.qip
 set_global_assignment -name QIP_FILE Pistol_Scene/Pistol_Scene.qip
 set_global_assignment -name SYSTEMVERILOG_FILE buckshot/buckshot_rom.sv
 set_global_assignment -name SYSTEMVERILOG_FILE buckshot/buckshot_palette.sv
