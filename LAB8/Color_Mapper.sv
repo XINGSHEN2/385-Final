@@ -23,9 +23,12 @@ module  color_mapper ( input              is_ball,            // Whether current
                      );
     
     logic [7:0] Red, Green, Blue;
+    logic [3:0] Red_Right, Green_Right, Blue_Right;
     logic [3:0] Red_buckshot, Green_buckshot, Blue_buckshot;
     logic [3:0] Red_BG_Idle_Pistol, Green_BG_Idle_Pistol, Blue_BG_Idle_Pistol;
-    logic [3:0] Red_Right, Green_Right, Blue_Right;
+    logic [3:0] Red_BG_Blue_Dead, Green_BG_Blue_Dead, Blue_BG_Blue_Dead;
+    logic [3:0] Red_BG_Red_Dead, Green_BG_Red_Dead, Blue_BG_Red_Dead;
+    
     
     // Output colors to VGA
     assign VGA_R = Red;
@@ -36,41 +39,57 @@ module  color_mapper ( input              is_ball,            // Whether current
     buckshot_example buckshot_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_buckshot), .blue(Blue_buckshot), .green(Green_buckshot));
     Pistol_Scene_example Right_instance (.vga_clk(Clk), .DrawX(Ball_x_dis + 64), .DrawY(Ball_y_dis + 64), .blank(1'b1), .red(Red_Right), .blue(Blue_Right), .green(Green_Right));
     BG_Idle_Pistol_example BG_Idle_Pistol_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Idle_Pistol), .blue(Blue_BG_Idle_Pistol), .green(Green_BG_Idle_Pistol))
-
+    BG_Blue_Dead_example BG_Blue_Dead_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Blue_Dead), .blue(Blue_BG_Blue_Dead), .green(Green_BG_Blue_Dead));
+    BG_Red_Dead_example BG_Red_Dead_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Red_Dead), .blue(Blue_BG_Red_Dead), .green(Green_BG_Red_Dead));
 
 
     // Assign color based on is_ball signal
+    // always_comb
+    // begin
+    //     if (is_ball == 1'b1) 
+    //     begin
+    //         // Right
+    //         if (Red_Right == 0 && Green_Right == 0 && Blue_Right == 0)
+    //         begin
+    //             Red = {Red_buckshot, 4'b0000};
+    //             Green = {Green_buckshot, 4'b0000};
+    //             Blue = {Blue_buckshot, 4'b0000};
+    //         end
+    //         else
+    //         begin
+    //             Red = {Red_Right, 4'b0000};
+    //             Green = {Green_Right, 4'b0000};
+    //             Blue = {Blue_Right, 4'b0000};
+    //         end
+    //     end
+    //     else 
+    //     begin
+    //         Red = {Red_buckshot, 4'b0000};
+    //         Green = {Green_buckshot, 4'b0000};
+    //         Blue = {Blue_buckshot, 4'b0000};
+    //     end
+    // end 
     always_comb
     begin
-        if (is_ball == 1'b1) 
-        begin
-            // Right
-            if (Red_Right == 0 && Green_Right == 0 && Blue_Right == 0)
-            begin
+        case(game_state)
+            4'b1111 : // MENU
+                begin
                 Red = {Red_buckshot, 4'b0000};
                 Green = {Green_buckshot, 4'b0000};
                 Blue = {Blue_buckshot, 4'b0000};
-                // Red = 8'd128;
-                // Green = 8'd128;
-                // Blue = 8'd128;
-            end
-            else
-            begin
-                Red = {Red_Right, 4'b0000};
-                Green = {Green_Right, 4'b0000};
-                Blue = {Blue_Right, 4'b0000};
-            end
-        end
-        else 
-        begin
-            // Background with nice color gradient
-            // Red = 8'd128;
-            // Green = 8'd128;
-            // Blue = 8'd128;
-            Red = {Red_buckshot, 4'b0000};
-            Green = {Green_buckshot, 4'b0000};
-            Blue = {Blue_buckshot, 4'b0000};
-        end
-    end 
+                end
+            4'b0000 : // IDLE
+                begin
+                Red = {BG_Idle_Pistol, 4'b0000};
+                Green = {BG_Idle_Pistol, 4'b0000};
+                Blue = {BG_Idle_Pistol, 4'b0000};
+                end
+            default:
+                begin
+                end
+
+        endcase
+
+    end
     
 endmodule
