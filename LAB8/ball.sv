@@ -20,6 +20,7 @@ module  ball ( input         Clk,                // 50 MHz clock
                              controllable,
                input [9:0]   DrawX, DrawY,       // Current pixel coordinates
                input [7:0]   keycode,
+               input controllable,
                output logic  is_ball             // Whether current pixel belongs to ball or background
                output logic  [1:0] revolver_target     // 0 for player A, 1 for player B, 2 for in the way
                output logic  [9:0] Ball_x_dis, Ball_y_dis
