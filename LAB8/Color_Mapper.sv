@@ -18,7 +18,7 @@ module  color_mapper ( input              is_ball,            // Whether current
                         input               Clk,
                                                               //   or background (computed in ball.sv)
                        input        [9:0] DrawX, DrawY, Ball_x_dis, Ball_y_dis,      // Current pixel coordinates
-                       input        [3:0] game_state,
+                       input        [3:0] cur_game_state,
                        output logic [7:0] VGA_R, VGA_G, VGA_B // VGA RGB output
                      );
     
@@ -38,7 +38,7 @@ module  color_mapper ( input              is_ball,            // Whether current
     // change color to the destnation pixel
     buckshot_example buckshot_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_buckshot), .blue(Blue_buckshot), .green(Green_buckshot));
     Pistol_Scene_example Right_instance (.vga_clk(Clk), .DrawX(Ball_x_dis + 64), .DrawY(Ball_y_dis + 64), .blank(1'b1), .red(Red_Right), .blue(Blue_Right), .green(Green_Right));
-    BG_Idle_Pistol_example BG_Idle_Pistol_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Idle_Pistol), .blue(Blue_BG_Idle_Pistol), .green(Green_BG_Idle_Pistol))
+    BG_Idle_Pistol_example BG_Idle_Pistol_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Idle_Pistol), .blue(Blue_BG_Idle_Pistol), .green(Green_BG_Idle_Pistol));
     BG_Blue_Dead_example BG_Blue_Dead_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Blue_Dead), .blue(Blue_BG_Blue_Dead), .green(Green_BG_Blue_Dead));
     BG_Red_Dead_example BG_Red_Dead_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_BG_Red_Dead), .blue(Blue_BG_Red_Dead), .green(Green_BG_Red_Dead));
 
@@ -71,7 +71,7 @@ module  color_mapper ( input              is_ball,            // Whether current
     // end 
     always_comb
     begin
-        case(game_state)
+        case(cur_game_state)
             4'b1111 : // MENU
                 begin
                 Red = {Red_buckshot, 4'b0000};
@@ -80,12 +80,15 @@ module  color_mapper ( input              is_ball,            // Whether current
                 end
             4'b0000 : // IDLE
                 begin
-                Red = {BG_Idle_Pistol, 4'b0000};
-                Green = {BG_Idle_Pistol, 4'b0000};
-                Blue = {BG_Idle_Pistol, 4'b0000};
+                Red = {Red_BG_Idle_Pistol, 4'b0000};
+                Green = {Green_BG_Idle_Pistol, 4'b0000};
+                Blue = {Blue_BG_Idle_Pistol, 4'b0000};
                 end
             default:
                 begin
+					 Red = {Red_buckshot, 4'b0000};
+                Green = {Green_buckshot, 4'b0000};
+                Blue = {Blue_buckshot, 4'b0000};
                 end
 
         endcase

@@ -19,8 +19,8 @@ module timer (
     state_t cur_state, next_state;
 
     // 状态转移逻辑
-    always_ff @(posedge clk or posedge reset) begin
-        if (reset) begin
+    always_ff @(posedge Clk or posedge Reset) begin
+        if (Reset) begin
             cur_state <= IDLE;
             counter <= 27'd0;
         end else begin
@@ -36,10 +36,10 @@ module timer (
     // 下一个状态逻辑和输出逻辑
     always_comb begin
         next_state = cur_state;
-        done = 1'b0;
+        Done = 1'b0;
         case (cur_state)
             IDLE: begin
-                if (start) begin
+                if (Start) begin
                     next_state = RUNNING;
                 end
             end
@@ -49,7 +49,7 @@ module timer (
                 end
             end
             DONE: begin
-                done = 1'b1;
+                Done = 1'b1;
                 next_state = WAIT;
             end
             WAIT: begin

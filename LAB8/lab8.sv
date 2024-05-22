@@ -62,7 +62,7 @@ module lab8( input               CLOCK_50,
 	// new middle valiables
 	logic [9:0] DrawX,DrawY,Ball_x_dis,Ball_y_dis;
 	logic is_ball;
-    logic revolver_target;
+    logic [1:0]revolver_target;
     logic[3:0] next_game_state;
     logic[2:0] next_revolver_state;
     logic[3:0] cur_game_state;
@@ -132,10 +132,10 @@ module lab8( input               CLOCK_50,
     
     // Which signal should be frame_clk?
     ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .DrawX, .DrawY, .keycode, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
-    random random_instance(.Clk, .Reset, .count(random_num))
-    timer timer_instance(.Clk, .Reset, .Start(timer_start), .Done(timer_done))
-    game_state game_state_instance (.Clk, .Reset(Reset_h), .next_state(next_game_state), .state(cur_game_state))
-    revolver_state revolver_state_instance (.Clk, .Reset(Reset_h), .next_state(next_revolver_state), .state(cur_revolver_state))
+    random random_instance(.Clk, .Reset(Reset_h), .count(random_num));
+    timer timer_instance(.Clk, .Reset(Reset_h), .Start(timer_start), .Done(timer_done));
+    game_state game_state_instance (.Clk, .Reset(Reset_h), .next_state(next_game_state), .state(cur_game_state));
+    revolver_state revolver_state_instance (.Clk, .Reset(Reset_h), .next_state(next_revolver_state), .state(cur_revolver_state));
 
     color_mapper color_instance(.*);
     
@@ -152,10 +152,10 @@ module lab8( input               CLOCK_50,
 	  always_comb
 		 begin
 		 // default case
-		LEDG = 8'b0000;
+		  LEDG = 8'b0000;
         timer_start = 1'b0;
-        timer_done = 1'b0;
         last_player = 1'b0;
+		  next_game_state = cur_game_state;
         
 		  case(keycode)
 			  8'h04: begin
@@ -244,11 +244,6 @@ module lab8( input               CLOCK_50,
                 
             end
 
-            // Add other states here as needed
-
-            default: begin
-                next_game_state = 4'b0000; // default state
-            end
         endcase
 
 		end

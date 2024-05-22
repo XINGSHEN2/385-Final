@@ -4,8 +4,8 @@ module random (
     output logic [2:0] count
 );
 
-    always_ff @(posedge clk or posedge reset) begin
-        if (reset) begin
+    always_ff @(posedge Clk or posedge Reset) begin
+        if (Reset) begin
             count <= 3'd0;
         end else begin
             if (count == 3'd5) begin

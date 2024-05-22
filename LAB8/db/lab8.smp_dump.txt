@@ -1,4 +1,11 @@
 
+State Machine - |lab8|timer:timer_instance|cur_state
+Name cur_state.WAIT cur_state.DONE cur_state.RUNNING cur_state.IDLE 
+cur_state.IDLE 0 0 0 0 
+cur_state.RUNNING 0 0 1 1 
+cur_state.DONE 0 1 0 1 
+cur_state.WAIT 1 0 0 1 
+
 State Machine - |lab8|lab8_soc:nios_system|lab8_soc_sdram:sdram|m_next
 Name m_next.010000000 m_next.000010000 m_next.000001000 m_next.000000001 
 m_next.000000001 0 0 0 0 
