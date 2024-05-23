@@ -32,6 +32,8 @@ module  color_mapper ( input              is_ball,            // Whether current
     logic [3:0] Red_red_die, Green_red_die, Blue_red_die;
     logic [3:0] Red_blue_sit, Green_blue_sit, Blue_blue_sit;
     logic [3:0] Red_blue_die, Green_blue_die, Blue_blue_die;
+    logic [3:0] Red_start_label, Green_start_label, Blue_start_label;
+    logic [3:0] Red_exit_label, Green_exit_label, Blue_exit_label;
 
     
     
@@ -48,6 +50,11 @@ module  color_mapper ( input              is_ball,            // Whether current
     blue_die_example blue_die_instance (.vga_clk(Clk), .DrawX((DrawX - 440)>>1), .DrawY((DrawY - 130)>>1), .blank(1'b1), .red(Red_blue_die), .blue(Blue_blue_die), .green(Green_blue_die));
     red_sit_example red_sit_instance (.vga_clk(Clk), .DrawX(DrawX>>1), .DrawY((DrawY - 80)>>1), .blank(1'b1), .red(Red_red_sit), .blue(Blue_red_sit), .green(Green_red_sit));
     red_die_example red_die_instance (.vga_clk(Clk), .DrawX(DrawX>>1), .DrawY((DrawY - 80)>>1), .blank(1'b1), .red(Red_red_die), .blue(Blue_red_die), .green(Green_red_die));
+    start_example start_instance (.vga_clk(Clk), .DrawX(DrawX-566), .DrawY(DrawY-50), .blank(1'b1), .red(Red_start_label), .blue(Blue_start_label), .green(Green_start_label));
+    exit_example end_instance (.vga_clk(Clk), .DrawX(DrawX-566), .DrawY(DrawY-100), .blank(1'b1), .red(Red_exit_label), .blue(Blue_exit_label), .green(Green_exit_label));
+
+
+
     always_comb
     begin
         case(cur_game_state)
@@ -93,6 +100,24 @@ module  color_mapper ( input              is_ball,            // Whether current
                 Red = {Red_buckshot, 4'b0000};
                 Green = {Green_buckshot, 4'b0000};
                 Blue = {Blue_buckshot, 4'b0000};
+                if (DrawX >= 562 && DrawX <= 634 && DrawY >= 46 && DrawY <= 86)         // choose start label
+                begin
+                    Red = 8'b11111111;
+                    Green = 8'b11111111;
+                    Blue = 8'b00000000;
+                end
+                if (DrawX >= 566 && DrawX <= 630 && DrawY >= 50 && DrawY <= 82)        // start label
+                begin
+                    Red = {Red_start_label, 4'b0000};
+                    Green = {Green_start_label, 4'b0000};
+                    Blue = {Blue_start_label, 4'b0000};
+                end
+                else if (DrawX >= 566 && DrawX <= 630 && DrawY >= 100 && DrawY <= 132)  // exit label
+                begin
+                    Red = {Red_exit_label, 4'b0000};
+                    Green = {Green_exit_label, 4'b0000};
+                    Blue = {Blue_exit_label, 4'b0000};
+                end
                 end
             4'b0000: // IDLE no revolver, only two players
                 if (DrawY >= 80 && DrawY <= 400 && DrawX <= 320) // Red player
