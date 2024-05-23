@@ -295,10 +295,25 @@ module lab8( input               CLOCK_50,
                 end
             end
 
-            4'b1111: begin //menu
+            4'b1110: begin //menu selecting exit
+                if (keycode == 8'd82 || keycode == 8'd26)
+                begin
+                    next_game_state = 4'b1111;
+                end
+                else
+                begin
+                    next_game_state = 4'b1110;
+                end
+            end
+
+            4'b1111: begin //menu selecting start
                 if (keycode == 8'h28) //press enter
                 begin
                     next_game_state = 4'b0001;
+                end
+                else if (keycode == 8'd81 || keycode == 8'd34)
+                begin
+                    next_game_state = 4'b1110;
                 end
                 else
                 begin
