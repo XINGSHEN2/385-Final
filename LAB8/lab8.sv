@@ -226,7 +226,7 @@ module lab8( input               CLOCK_50,
                                 next_game_state = 4'b0101;
                             end
                         end else begin
-                            click. not fired
+                            // click. not fired
                             next_game_state = 4'b0011; // wait.
                         end
                     end else begin
@@ -243,6 +243,7 @@ module lab8( input               CLOCK_50,
 
             4'b0011: begin //Sleep: wait 2 seconds
                 timer_start = 1'b1;
+                controllable = 1'b1;
                 if (timer_done == 1'b1)
                 begin
                     if (last_player == 1'b0)
@@ -295,9 +296,9 @@ module lab8( input               CLOCK_50,
             end
 
             4'b1111: begin //menu
-                if (keycode == 8'h28) //press R to restart
+                if (keycode == 8'h28) //press enter
                 begin
-                    next_game_state = 4'b0000;
+                    next_game_state = 4'b0001;
                 end
                 else
                 begin

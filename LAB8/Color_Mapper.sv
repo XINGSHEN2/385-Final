@@ -24,7 +24,7 @@ module  color_mapper ( input              is_ball,            // Whether current
     
     logic [7:0] Red, Green, Blue;
     logic [3:0] Red_Right, Green_Right, Blue_Right;
-    // logic [3:0] Red_buckshot, Green_buckshot, Blue_buckshot;
+    logic [3:0] Red_buckshot, Green_buckshot, Blue_buckshot;
     logic [3:0] Red_background_empty, Green_background_empty, Blue_background_empty;
     logic [3:0] Red_blue, Green_blue, Blue_blue;
     logic [3:0] Red_red, Green_red, Blue_red;

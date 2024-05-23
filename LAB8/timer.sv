@@ -1,12 +1,11 @@
 module timer (
-    input logic Clk,      // 时钟信号
-    input logic Reset,    // 重置信号
-    input logic Start,    // 开始计时信号
-    output logic Done     // 计时完成信号
+    input logic Clk,  
+    input logic Reset,    
+    input logic Start,   
+    output logic Done     
 );
 
-    // 定义计数器宽度以便存储100,000,000
-    logic [26:0] counter; // 27位计数器，能计到134,217,728
+    logic [26:0] counter; 
 
     // 计时器状态定义
     typedef enum logic [1:0] {
