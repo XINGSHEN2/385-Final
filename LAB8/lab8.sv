@@ -133,7 +133,7 @@ module lab8( input               CLOCK_50,
     VGA_controller vga_controller_instance(.Clk, .Reset(Reset_h),.*);
     
     // Which signal should be frame_clk?
-    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .controllable, .DrawX, .DrawY, .keycode, pos_return, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
+    ball ball_instance(.Clk, .Reset(Reset_h), .frame_clk(VGA_VS), .controllable, .DrawX, .DrawY, .keycode, .pos_return, .is_ball, .revolver_target, .Ball_x_dis, .Ball_y_dis);
     random random_instance(.Clk, .Reset(Reset_h), .count(random_num));
     timer timer_instance(.Clk, .Reset(Reset_h), .Start(timer_start), .Done(timer_done));
     game_state game_state_instance (.Clk, .Reset(Reset_h), .next_state(next_game_state), .state(cur_game_state));

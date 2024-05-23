@@ -75,11 +75,6 @@ module  ball ( input         Clk,                // 50 MHz clock
         Ball_X_Motion_in = Ball_X_Motion;
         Ball_Y_Motion_in = Ball_Y_Motion;
 
-        if (pos_return)
-        begin
-
-        end
-
         // Update position and motion only at rising edge of frame clock
         if (frame_clk_rising_edge && controllable == 1)
             begin
