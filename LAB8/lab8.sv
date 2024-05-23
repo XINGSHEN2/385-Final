@@ -191,17 +191,17 @@ module lab8( input               CLOCK_50,
                 if (revolver_target != 2'd10)
                 begin
                     if (keycode == 8'h2c) begin // presses space, meaning pull trigger
-                        //if (random_num == 3'd0) begin
+                        if (random_num == 3'd0) begin
                             // fire!
                             if (revolver_target == 2'd00) begin
                                 next_game_state = 4'b0100;
                             end else begin
                                 next_game_state = 4'b0101;
                             end
-                        //end else begin
-                            // click. not fired
-                        //    next_game_state = 4'b0011; // wait.
-                        //end
+                        end else begin
+                            //click. not fired
+                            next_game_state = 4'b0011; // wait.
+                        end
                     end else begin
                         next_game_state = 4'b0001;
                     end
@@ -218,17 +218,17 @@ module lab8( input               CLOCK_50,
                 if (revolver_target != 2'b10)
                 begin
                     if (keycode == 8'h2c) begin // presses space, meaning pull trigger
-                        //if (random_num == 3'd0) begin
+                        if (random_num == 3'd0) begin
                             // fire!
                             if (revolver_target == 2'd00) begin
                                 next_game_state = 4'b0100;
                             end else begin
                                 next_game_state = 4'b0101;
                             end
-                        //end else begin
-                            // click. not fired
-                        //    next_game_state = 4'b0011; // wait.
-                        //end
+                        end else begin
+                            click. not fired
+                            next_game_state = 4'b0011; // wait.
+                        end
                     end else begin
                         next_game_state = 4'b0010;
                     end

@@ -44,7 +44,7 @@ module timer (
                 end
             end
             RUNNING: begin
-                if (counter == 27'd100_000_000 - 1) begin
+                if (counter == 27'd25000000 - 1) begin
                     next_state = DONE;
                 end
             end
