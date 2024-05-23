@@ -41,9 +41,9 @@ module  color_mapper ( input              is_ball,            // Whether current
     assign VGA_B = Blue;
 
     // change color to the destnation pixel
-    // buckshot_example buckshot_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_buckshot), .blue(Blue_buckshot), .green(Green_buckshot));
+    buckshot_example buckshot_instance (.vga_clk(Clk), .DrawX(DrawX>>1), .DrawY(DrawY>>1), .blank(1'b1), .red(Red_buckshot), .blue(Blue_buckshot), .green(Green_buckshot));
     Pistol_Scene_example Right_instance (.vga_clk(Clk), .DrawX(Ball_x_dis + 64), .DrawY(Ball_y_dis + 64), .blank(1'b1), .red(Red_Right), .blue(Blue_Right), .green(Green_Right));
-    background_empty_example background_empty_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY), .blank(1'b1), .red(Red_background_empty), .blue(Blue_background_empty), .green(Green_background_empty));
+    background_empty_example background_empty_instance (.vga_clk(Clk), .DrawX(DrawX>>1), .DrawY(DrawY>>1), .blank(1'b1), .red(Red_background_empty), .blue(Blue_background_empty), .green(Green_background_empty));
     blue_sit_example blue_sit_instance (.vga_clk(Clk), .DrawX(DrawX - 440), .DrawY(DrawY - 130), .blank(1'b1), .red(Red_blue_sit), .blue(Blue_blue_sit), .green(Green_blue_sit));
     blue_die_example blue_die_instance (.vga_clk(Clk), .DrawX(DrawX - 440), .DrawY(DrawY - 130), .blank(1'b1), .red(Red_blue_die), .blue(Blue_blue_die), .green(Green_blue_die));
     red_sit_example red_sit_instance (.vga_clk(Clk), .DrawX(DrawX), .DrawY(DrawY - 80), .blank(1'b1), .red(Red_red_sit), .blue(Blue_red_sit), .green(Green_red_sit));
@@ -88,12 +88,12 @@ module  color_mapper ( input              is_ball,            // Whether current
         Green = {Green_background_empty, 4'b0000};
         Blue = {Blue_background_empty, 4'b0000};
         case(cur_game_state)
-            // 4'b1111: // MENU, just show the menu
-            //     begin
-            //     Red = {Red_buckshot, 4'b0000};
-            //     Green = {Green_buckshot, 4'b0000};
-            //     Blue = {Blue_buckshot, 4'b0000};
-            //     end
+            4'b1111: // MENU, just show the menu
+                begin
+                Red = {Red_buckshot, 4'b0000};
+                Green = {Green_buckshot, 4'b0000};
+                Blue = {Blue_buckshot, 4'b0000};
+                end
             4'b0000: // IDLE no revolver, only two players
                 if (DrawY >= 80 && DrawY <= 400 && DrawX <= 320) // Red player
                 begin
