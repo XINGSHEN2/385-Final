@@ -23,6 +23,8 @@ module  color_mapper ( input              is_ball,            // Whether current
                      );
     
     logic [7:0] Red, Green, Blue;
+    logic [3:0] Red_selector_1, Green_selector_1, Blue_selector_1;
+    logic [3:0] Red_selector_2, Green_selector_2, Blue_selector_2;
     logic [3:0] Red_Right, Green_Right, Blue_Right;
     logic [3:0] Red_buckshot, Green_buckshot, Blue_buckshot;
     logic [3:0] Red_background_empty, Green_background_empty, Blue_background_empty;
@@ -43,6 +45,8 @@ module  color_mapper ( input              is_ball,            // Whether current
     assign VGA_B = Blue;
 
     // change color to the destnation pixel
+    selector_example selector_instance_1 (.vga_clk(Clk), .DrawX((DrawX - 80)>>1), .DrawY((DrawY - 220)>>1), .blank(1'b1), .red(Red_selector_1), .blue(Blue_selector_1), .green(Green_selector_1));
+    selector_example selector_instance_2 (.vga_clk(Clk), .DrawX((DrawX - 260)>>1), .DrawY((DrawY-220)>>1), .blank(1'b1), .red(Red_selector_2), .blue(Blue_selector_2), .green(Green_selector_2));
     buckshot_example buckshot_instance (.vga_clk(Clk), .DrawX(DrawX>>1), .DrawY(DrawY>>1), .blank(1'b1), .red(Red_buckshot), .blue(Blue_buckshot), .green(Green_buckshot));
     Pistol_Scene_example Right_instance (.vga_clk(Clk), .DrawX(Ball_x_dis + 64), .DrawY(Ball_y_dis + 64), .blank(1'b1), .red(Red_Right), .blue(Blue_Right), .green(Green_Right));
     background_empty_example background_empty_instance (.vga_clk(Clk), .DrawX(DrawX>>1), .DrawY(DrawY>>1), .blank(1'b1), .red(Red_background_empty), .blue(Blue_background_empty), .green(Green_background_empty));
@@ -168,7 +172,19 @@ module  color_mapper ( input              is_ball,            // Whether current
                 end
                 else        // not the revolver
                 begin
-                    if (DrawY >= 80 && DrawY <= 400 && DrawX <= 320) // Red player
+                    if (game_state == 4'b0001 && DrawX >= 80 && DrawX <= 112 && DrawY >= 220 && DrawY <= 252 && !(Red_selector == 0 && Blue_selector == 0 && Green_selector == 0))
+                    begin
+                        Red = {Red_selector_1, 4'b0000};
+                        Green = {Green_selector_1, 4'b0000};
+                        Blue = {Blue_selector_1, 4'b0000};
+                    end
+                    else if (game_state == 4'b0010 && DrawX >= 260 && DrawX <= 292 && DrawY >= 220 && DrawY <= 252 && !(Red_selector == 0 && Blue_selector == 0 && Green_selector == 0))
+                    begin
+                        Red = {Blue_selector_2, 4'b0000};
+                        Green = {Green_selector_2, 4'b0000};
+                        Blue = {Red_selector_2, 4'b0000};
+                    end
+                    else if (DrawY >= 80 && DrawY <= 400 && DrawX <= 320) // Red player
                     begin
                         if (Red_red == 0 && Green_red == 0 && Blue_red == 0) // color is black, show the background
                         begin
