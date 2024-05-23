@@ -1,10 +1,10 @@
 module background_empty_rom (
 	input logic clock,
-	input logic [18:0] address,
+	input logic [16:0] address,
 	output logic [3:0] q
 );
 
-logic [3:0] memory [0:307199] /* synthesis ram_init_file = "./background_empty/background_empty.mif" */;
+logic [3:0] memory [0:76799] /* synthesis ram_init_file = "./background_empty/background_empty.mif" */;
 
 always_ff @ (posedge clock) begin
 	q <= memory[address];
