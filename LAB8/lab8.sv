@@ -295,7 +295,7 @@ module lab8( input               CLOCK_50,
             end
 
             4'b1111: begin //menu
-                if (keycode == 8'h28) //press R to restart
+                if (keycode == 8'h28)
                 begin
                     next_game_state = 4'b0000;
                 end
