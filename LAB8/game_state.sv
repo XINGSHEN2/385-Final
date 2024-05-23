@@ -21,7 +21,7 @@ module game_state (
 
     always_ff @(posedge Clk or posedge Reset) begin
         if (Reset)
-            current_state <= 4'b0000;
+            current_state <= 4'b1111;
         else
             current_state <= next_state;
     end
