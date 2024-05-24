@@ -68,7 +68,7 @@ module lab8( input               CLOCK_50,
     logic[3:0] cur_game_state;
     logic[2:0] cur_revolver_state;
 
-    logic[2:0] random_num;//random number to determine if there is a bullet
+    logic[2:0] random_num, bullet_place;//random number to determine if there is a bullet
 
     //timer related
     logic timer_start;
@@ -76,7 +76,7 @@ module lab8( input               CLOCK_50,
 
     //turn related
     logic controllable; //is revolver controllable
-    logic last_player;
+    logic[1:0] last_player;
     logic pos_return; //reset pos of revolver
 
     
@@ -156,10 +156,22 @@ module lab8( input               CLOCK_50,
 		 // default case
 		  LEDG = 8'b0000;
         timer_start = 1'b0;
-        last_player = 1'b0;
+        if (last_player == 2'b00)
+		  begin
+			last_player = 2'b00;
+		  end
+		  else if (last_player == 2'b01)
+		  begin
+			last_player = 2'b01;
+		  end
+		  else
+		  begin
+			last_player = 2'b11;
+		  end
         controllable = 1'b0;
         pos_return = 1'b0;
 		  next_game_state = cur_game_state;
+		  
         
 		  case(keycode)
 			  8'h04: begin
@@ -210,7 +222,7 @@ module lab8( input               CLOCK_50,
                 begin
                     next_game_state = 4'b0001;
                 end
-                last_player = 1'b0;
+                last_player = 2'b00;
             end
 
             4'b0010: begin // Player 2's turn
@@ -238,22 +250,32 @@ module lab8( input               CLOCK_50,
                     next_game_state = 4'b0010;
                 end
 
-                last_player = 1'b1;
+                last_player = 2'b01;
             end
 
             4'b0011: begin //Sleep: wait 2 seconds
                 timer_start = 1'b1;
-                controllable = 1'b1;
                 if (timer_done == 1'b1)
                 begin
-                    if (last_player == 1'b0)
+                    if (last_player == 2'b00 && revolver_target == 2'b01)
                     begin
                         next_game_state = 4'b0010;
                     end
-                    else
+                    else if (last_player == 2'b01 && revolver_target == 2'b00)
                     begin
                         next_game_state = 4'b0001;
                     end
+						  else
+						  begin
+							if (last_player == 2'b00)
+							begin
+								next_game_state = 4'b0001;
+							end
+							else
+							begin
+								next_game_state = 4'b0010;
+							end
+						  end
                 end
                 else
                 begin
@@ -294,9 +316,9 @@ module lab8( input               CLOCK_50,
                     next_game_state = 4'b0001;
                 end
             end
-
-            4'b1110: begin //menu selecting exit
-                if (keycode == 8'd82 || keycode == 8'd26)
+            
+            4'b1110: begin //exit
+                if (keycode == 8'h52) 
                 begin
                     next_game_state = 4'b1111;
                 end
@@ -306,12 +328,12 @@ module lab8( input               CLOCK_50,
                 end
             end
 
-            4'b1111: begin //menu selecting start
-                if (keycode == 8'h28) //press enter
+            4'b1111: begin //menu
+                if (keycode == 8'h28) //press R to restart
                 begin
-                    next_game_state = 4'b0001;
+                    next_game_state = 4'b0000;
                 end
-                else if (keycode == 8'd81 || keycode == 8'd34)
+                else if (keycode == 8'h51)
                 begin
                     next_game_state = 4'b1110;
                 end

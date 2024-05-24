@@ -32,8 +32,8 @@ module  ball ( input         Clk,                // 50 MHz clock
     parameter [9:0] Ball_X_Max = 10'd480;     // Rightmost point on the X axis
     parameter [9:0] Ball_Y_Min = 10'd0;       // Topmost point on the Y axis
     parameter [9:0] Ball_Y_Max = 10'd479;     // Bottommost point on the Y axis
-    parameter [9:0] Ball_X_Step = 10'd1;      // Step size on the X axis
-    parameter [9:0] Ball_Y_Step = 10'd1;      // Step size on the Y axis
+    parameter [9:0] Ball_X_Step = 10'd4;      // Step size on the X axis
+    parameter [9:0] Ball_Y_Step = 10'd4;      // Step size on the Y axis
     parameter [9:0] Ball_Size = 10'd64;        // Ball size
 
     logic [9:0] Ball_X_Pos, Ball_X_Motion, Ball_Y_Pos, Ball_Y_Motion, Ball_x, Ball_y;
